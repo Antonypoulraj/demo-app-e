@@ -1,0 +1,35 @@
+// {
+//   "css.validate": false,
+//   "editor.quickSuggestions": {
+//     "strings": true
+//   },
+//   "tailwindCSS.experimental.configFile": "./tailwind.config.js"
+// }
+{
+  // ✅ Disable CSS validation (as in your config)
+  "css.validate": false,
+
+  // ✅ Enable quick suggestions inside strings (as in your config)
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  // ✅ Tailwind config location (your config)
+  "tailwindCSS.experimental.configFile": "./tailwind.config.js",
+
+  // ✅ Enable Prettier formatting
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.enable": true,
+
+  // ✅ Format on save
+  "editor.formatOnSave": true,
+
+  // ✅ Enable ESLint for relevant file types
+  "eslint.validate": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
+
+  // ✅ Auto fix ESLint issues on save
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "explicit"
+  }
+}
