@@ -11,8 +11,7 @@ export default function Index() {
 
   return null;
 }
-
-// export default Index;
+//  export default Index;
 
 // import { useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
