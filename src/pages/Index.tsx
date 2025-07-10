@@ -1,7 +1,8 @@
+// src/pages/index.tsx
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
-const Index = () => {
+export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
@@ -9,9 +10,9 @@ const Index = () => {
   }, [router]);
 
   return null;
-};
+}
 
-export default Index;
+// export default Index;
 
 // import { useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
