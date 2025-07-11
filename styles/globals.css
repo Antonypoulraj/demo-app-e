@@ -1,27 +1,25 @@
-mkdir -p styles
-cat > styles/globals.css <<'EOF'
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
 
 /* Custom theme variables */
 :root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 10%;
+  --background: 0 0% 100%; /* white */
+  --foreground: 0 0% 10%; /* near black */
+
   --font-sans: var(--font-geist-sans, system-ui, sans-serif);
   --font-mono: var(--font-geist-mono, monospace);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 93%;
+    --background: 0 0% 4%; /* near black */
+    --foreground: 0 0% 93%; /* light gray */
   }
 }
 
+/* Apply global styles */
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-sans);
 }
-EOF

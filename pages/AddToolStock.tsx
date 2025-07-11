@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import AddToolStockHeader from "@/components/AddToolStockHeader";
-import ToolStockForm from "@/components/ToolStockForm";
+import AddToolStockHeader from "../components/AddToolStockHeader";
+import ToolStockForm from "../components/ToolStockForm";
 
 const AddToolStock = () => {
   const router = useRouter();

@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import AddRawMaterialHeader from "@/components/AddRawMaterialHeader";
-import RawMaterialForm from "@/components/RawMaterialForm";
+import AddRawMaterialHeader from "../components/AddRawMaterialHeader";
+import RawMaterialForm from "../components/RawMaterialForm";
 
 const AddRawMaterial = () => {
   const router = useRouter();

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useRouter } from "next/router";
-import { Button } from "../src/components/ui/button";
-import { Card, CardContent } from "../src/components/ui/card";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../src/components/ui/dropdown-menu";
+} from "../components/ui/dropdown-menu";
 import {
   MoreVertical,
   Users,
@@ -19,7 +19,7 @@ import {
   BarChart3,
   LogOut,
 } from "lucide-react";
-import { useToast } from "../src/hooks/use-toast";
+import { useToast } from "../hooks/use-toast";
 
 interface Portal {
   id: string;

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Button } from "../src/components/ui/button";
-import { Input } from "../src/components/ui/input";
-import { Label } from "../src/components/ui/label";
-import { Card, CardContent, CardHeader } from "../src/components/ui/card";
-import { useToast } from "../src/hooks/use-toast";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Card, CardContent, CardHeader } from "../components/ui/card";
+import { useToast } from "../hooks/use-toast";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 
 const CreateAccount = () => {

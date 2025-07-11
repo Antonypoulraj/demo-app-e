@@ -2,15 +2,15 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../contexts/AuthContext";
-import { Button } from "@/components/ui/button";
+import { useAuth } from "../contexts/AuthContext";
+import { Button } from "./ui/button";
 import { ArrowLeft } from "lucide-react";
 
-interface AddToolStockHeaderProps {
+interface AddRawMaterialHeaderProps {
   isEdit: boolean;
 }
 
-const AddToolStockHeader: React.FC<AddToolStockHeaderProps> = ({ isEdit }) => {
+const AddRawMaterialHeader: React.FC<AddRawMaterialHeaderProps> = ({ isEdit }) => {
   const { user } = useAuth();
   const router = useRouter();
 
@@ -19,11 +19,11 @@ const AddToolStockHeader: React.FC<AddToolStockHeaderProps> = ({ isEdit }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => router.push("/toolstocks")} className="p-2">
+            <Button variant="ghost" onClick={() => router.push("/rawmaterials")} className="p-2">
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <h1 className="font-times text-xl font-bold text-gray-800">
-              {isEdit ? "Edit Tool Stock" : "Add Tool Stock"}
+              {isEdit ? "Edit Raw Material" : "Add Raw Material"}
             </h1>
           </div>
           <div className="text-right">
@@ -36,4 +36,4 @@ const AddToolStockHeader: React.FC<AddToolStockHeaderProps> = ({ isEdit }) => {
   );
 };
 
-export default AddToolStockHeader;
+export default AddRawMaterialHeader;

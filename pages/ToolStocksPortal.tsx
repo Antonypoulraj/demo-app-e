@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
-import { Button } from "../src/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../src/components/ui/card";
-import { Input } from "../src/components/ui/input";
-import { Label } from "../src/components/ui/label";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../src/components/ui/select";
+} from "../components/ui/select";
 import {
   Table,
   TableBody,
@@ -19,16 +19,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../src/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../src/components/ui/tabs";
+} from "../components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../src/components/ui/dialog";
-import { Badge } from "../src/components/ui/badge";
+} from "../components/ui/dialog";
+import { Badge } from "../components/ui/badge";
 import {
   ArrowLeft,
   Plus,
@@ -41,7 +41,7 @@ import {
   PackageSearch,
   Upload,
 } from "lucide-react";
-import { useToast } from "../src/hooks/use-toast";
+import { useToast } from "../hooks/use-toast";
 import {
   BarChart,
   Bar,
