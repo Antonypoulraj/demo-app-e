@@ -2,10 +2,9 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./pages/**/*.{js,ts,jsx,tsx}", // for all route pages
+    "./components/**/*.{js,ts,jsx,tsx}", // for all shared UI components
+    "./contexts/**/*.{js,ts,jsx,tsx}", // if using contexts outside src
   ],
   theme: {
     extend: {
