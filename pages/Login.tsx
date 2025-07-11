@@ -1,5 +1,6 @@
+// pages/login.tsx
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ Use next/router for Pages Router
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
