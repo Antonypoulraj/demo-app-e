@@ -1,31 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ Fixed: use next/router for Pages Router
 import { useAuth } from "../contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { useToast } from "@/hooks/use-toast";
 
-import { ArrowLeft, Plus, Edit, Trash2, Search, BarChart3, Factory, X, Upload } from "lucide-react";
+import { ArrowLeft, Plus, Search, X, Upload } from "lucide-react";
 
 import {
   BarChart,
@@ -68,26 +54,6 @@ const ProductionPortal = () => {
   const totalFinished = records.reduce((sum, r) => sum + r.totalFinishedQuantity, 0);
   const totalRejected = records.reduce((sum, r) => sum + r.totalRejectionQuantity, 0);
 
-  const shiftData = [
-    { name: "Shift 1", machined: 0, finished: 0, rejected: 0 },
-    { name: "Shift 2", machined: 0, finished: 0, rejected: 0 },
-  ];
-
-  const rejectionData = [
-    { name: "Surface finishing", value: 0, color: "#ef4444" },
-    { name: "Inner diameter finishing", value: 0, color: "#f59e0b" },
-    { name: "Hole chipped", value: 0, color: "#3b82f6" },
-    { name: "Tool Broken", value: 0, color: "#10b981" },
-  ];
-
-  const productionTrendData = [
-    { date: "2024-05-20", machined: 0, finished: 0, rejected: 0 },
-    { date: "2024-05-21", machined: 0, finished: 0, rejected: 0 },
-    { date: "2024-05-22", machined: 0, finished: 0, rejected: 0 },
-    { date: "2024-05-23", machined: 0, finished: 0, rejected: 0 },
-    { date: "2024-05-24", machined: 0, finished: 0, rejected: 0 },
-  ];
-
   const filteredRecords = records.filter(
     record =>
       record.componentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -98,7 +64,6 @@ const ProductionPortal = () => {
 
   const handleEdit = (record: ProductionRecord) => {
     router.push(`/production/add?edit=true&id=${record.id}`);
-    // Optional: Store in state or global context if needed
   };
 
   const handleDelete = (id: string) => {
@@ -164,81 +129,98 @@ const ProductionPortal = () => {
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
-          {/* Table View */}
+          {/* Production Records Tab */}
           <TabsContent value="records" className="space-y-6">
-            {/* Filters */}
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-              <div className="flex flex-col sm:flex-row gap-4 flex-1">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                  <Input
-                    placeholder="Search records..."
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    className="pl-10 pr-10 font-times"
-                  />
-                  {searchTerm && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={clearSearch}
-                      className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  )}
-                </div>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search records..."
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  className="pl-10 pr-10 font-times"
+                />
+                {searchTerm && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearSearch}
+                    className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
               </div>
-
               <Button onClick={() => router.push("/production/add")} className="font-times">
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Record
               </Button>
             </div>
 
-            {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Reuse your existing cards here */}
-              {/* ... */}
+            {/* File Upload */}
+            <div className="flex justify-end">
+              <div className="flex items-center gap-3">
+                <span className="font-times text-sm text-gray-600">Upload File:</span>
+                <Label htmlFor="file-upload" className="cursor-pointer">
+                  <Button variant="outline" size="sm" className="font-times">
+                    <Upload className="h-4 w-4 mr-2" />
+                    Choose File
+                  </Button>
+                </Label>
+                <Input
+                  id="file-upload"
+                  type="file"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
             </div>
 
-            {/* Records Table */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-times">
-                  Production Records ({filteredRecords.length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {/* Table rendering logic stays the same */}
-                {/* ... */}
-                <div className="flex justify-end mt-4">
-                  <div className="flex items-center gap-3">
-                    <span className="font-times text-sm text-gray-600">Upload File:</span>
-                    <Label htmlFor="file-upload" className="cursor-pointer">
-                      <Button variant="outline" size="sm" className="font-times">
-                        <Upload className="h-4 w-4 mr-2" />
-                        Choose File
-                      </Button>
-                    </Label>
-                    <Input
-                      id="file-upload"
-                      type="file"
-                      accept=".pdf,.doc,.docx,.xls,.xlsx"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Production Table Placeholder */}
+            {/* Replace with your <Table> component using filteredRecords */}
           </TabsContent>
 
-          {/* Analytics */}
+          {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Charts and trends */}
-              {/* ... */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-times">Production Trend</CardTitle>
+                </CardHeader>
+                <CardContent className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={[]} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Line type="monotone" dataKey="machined" stroke="#8884d8" />
+                      <Line type="monotone" dataKey="finished" stroke="#82ca9d" />
+                      <Line type="monotone" dataKey="rejected" stroke="#ff6961" />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-times">Rejection Reasons</CardTitle>
+                </CardHeader>
+                <CardContent className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie data={[]} dataKey="value" nameKey="name" outerRadius={80}>
+                        {/* You can loop colors if needed */}
+                        {/* <Cell fill="#ef4444" /> */}
+                      </Pie>
+                      <Tooltip />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
         </Tabs>

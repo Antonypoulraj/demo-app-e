@@ -1,19 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { Button } from "../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -21,9 +14,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { Badge } from "../components/ui/badge";
+} from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import {
   ArrowLeft,
   Plus,
@@ -36,20 +30,7 @@ import {
   X,
   Upload,
 } from "lucide-react";
-import { useToast } from "../hooks/use-toast";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 interface RawMaterial {
   id: string;
@@ -83,45 +64,16 @@ const RawMaterialsPortal = () => {
   });
 
   const handleEdit = (material: RawMaterial) => {
-    router.push(`/rawmaterials/add?edit=true&id=${material.id}`);
+    sessionStorage.setItem("edit_raw_material", JSON.stringify(material));
+    router.push(`/addrawmaterial?edit=true`);
   };
 
   const handleDelete = (id: string) => {
-    setMaterials(materials.filter(material => material.id !== id));
+    setMaterials(prev => prev.filter(material => material.id !== id));
     toast({
       title: "Material Deleted",
-      description: "Raw material has been removed from inventory.",
+      description: "Raw material has been removed.",
     });
-  };
-
-  const clearSearch = () => {
-    setSearchTerm("");
-  };
-
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case "In Stock":
-        return "default";
-      case "Low Stock":
-        return "secondary";
-      case "Out of Stock":
-        return "destructive";
-      default:
-        return "secondary";
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "In Stock":
-        return <CheckCircle className="h-4 w-4" />;
-      case "Low Stock":
-        return <AlertTriangle className="h-4 w-4" />;
-      case "Out of Stock":
-        return <X className="h-4 w-4" />;
-      default:
-        return null;
-    }
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,56 +112,67 @@ const RawMaterialsPortal = () => {
             status: "Low Stock",
           },
         ];
-
         setMaterials(mockData);
         toast({
           title: "File Uploaded",
-          description: `${file.name} has been uploaded successfully and data populated.`,
+          description: `${file.name} uploaded successfully and data loaded.`,
         });
       } else {
         toast({
           title: "Invalid File Type",
-          description: "Please upload only PDF, DOC, or Excel files.",
+          description: "Only PDF, Word, or Excel files are allowed.",
           variant: "destructive",
         });
       }
     }
   };
 
-  const statusData = [
+  const getStatusBadgeVariant = (status: string) => {
+    switch (status) {
+      case "In Stock":
+        return "default";
+      case "Low Stock":
+        return "secondary";
+      case "Out of Stock":
+        return "destructive";
+      default:
+        return "secondary";
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "In Stock":
+        return <CheckCircle className="h-4 w-4" />;
+      case "Low Stock":
+        return <AlertTriangle className="h-4 w-4" />;
+      case "Out of Stock":
+        return <X className="h-4 w-4" />;
+      default:
+        return null;
+    }
+  };
+
+  const statusChartData = [
     {
       name: "In Stock",
-      count: materials.filter(m => m.status === "In Stock").length,
+      value: materials.filter(m => m.status === "In Stock").length,
       color: "#10b981",
     },
     {
       name: "Low Stock",
-      count: materials.filter(m => m.status === "Low Stock").length,
+      value: materials.filter(m => m.status === "Low Stock").length,
       color: "#f59e0b",
     },
     {
       name: "Out of Stock",
-      count: materials.filter(m => m.status === "Out of Stock").length,
+      value: materials.filter(m => m.status === "Out of Stock").length,
       color: "#ef4444",
     },
   ];
 
-  const supplierData = materials.reduce(
-    (acc, material) => {
-      const existing = acc.find(item => item.name === material.supplierName);
-      if (existing) {
-        existing.count += 1;
-      } else {
-        acc.push({ name: material.supplierName, count: 1 });
-      }
-      return acc;
-    },
-    [] as { name: string; count: number }[]
-  );
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -217,18 +180,146 @@ const RawMaterialsPortal = () => {
               <Button variant="ghost" onClick={() => router.push("/dashboard")} className="p-2">
                 <ArrowLeft className="h-5 w-5" />
               </Button>
-              <h1 className="font-times text-xl font-bold text-gray-800">Raw Materials Portal</h1>
+              <h1 className="text-xl font-bold text-gray-800 font-times">Raw Materials Portal</h1>
             </div>
             <div className="text-right">
-              <p className="font-times text-sm font-medium text-gray-800">{user?.username}</p>
-              <p className="font-times text-xs text-gray-500 capitalize">{user?.role} Account</p>
+              <p className="text-sm font-medium text-gray-800 font-times">{user?.username}</p>
+              <p className="text-xs text-gray-500 capitalize font-times">{user?.role} Account</p>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      {/* ...keep all UI content the same as your original, no changes needed... */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <Tabs defaultValue="records" className="space-y-6">
+          <TabsList className="font-times">
+            <TabsTrigger value="records">Inventory</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+          </TabsList>
+
+          {/* Inventory Records */}
+          <TabsContent value="records" className="space-y-6">
+            {/* Search & Upload */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search by name, spec, or supplier"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                  className="pl-10 font-times"
+                />
+              </div>
+
+              <div className="flex gap-2 items-center">
+                <Button onClick={() => router.push("/addrawmaterial")} className="font-times">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Material
+                </Button>
+                <Label htmlFor="file-upload" className="cursor-pointer">
+                  <Button variant="outline" size="sm" className="font-times">
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload File
+                  </Button>
+                </Label>
+                <Input
+                  id="file-upload"
+                  type="file"
+                  accept=".pdf,.doc,.docx,.xls,.xlsx"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
+            </div>
+
+            {/* Table */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-times">
+                  Raw Materials ({filteredMaterials.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Spec</TableHead>
+                      <TableHead>Grade</TableHead>
+                      <TableHead>Qty</TableHead>
+                      <TableHead>Supplier</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredMaterials.map(material => (
+                      <TableRow key={material.id}>
+                        <TableCell>{material.materialName}</TableCell>
+                        <TableCell>{material.specification}</TableCell>
+                        <TableCell>{material.grade}</TableCell>
+                        <TableCell>{`${material.quantity} ${material.unit}`}</TableCell>
+                        <TableCell>{material.supplierName}</TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={getStatusBadgeVariant(material.status)}
+                            className="flex items-center gap-1"
+                          >
+                            {getStatusIcon(material.status)}
+                            {material.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="flex gap-2">
+                          <Button variant="ghost" size="icon" onClick={() => handleEdit(material)}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDelete(material.id)}
+                          >
+                            <Trash2 className="h-4 w-4 text-red-500" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Analytics */}
+          <TabsContent value="analytics">
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-times">Inventory Status Overview</CardTitle>
+              </CardHeader>
+              <CardContent style={{ height: 300 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={statusChartData}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      label
+                    >
+                      {statusChartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
     </div>
   );
 };

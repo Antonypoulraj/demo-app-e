@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
@@ -24,10 +24,7 @@ import { cn } from "@/lib/utils";
 const AddProductionRecord = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { toast } = useToast();
-
-  const isEdit = searchParams?.get("edit") === "true";
+  const isEdit = typeof router.query.edit === "string" && router.query.edit === "true";
 
   const [date, setDate] = useState<Date>();
 
@@ -79,6 +76,8 @@ const AddProductionRecord = () => {
       }
     }
   }, [isEdit]);
+
+  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

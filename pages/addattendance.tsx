@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { ArrowLeft } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ Correct
 import { useToast } from "../hooks/use-toast";
 
 interface AttendanceRecord {
@@ -30,11 +30,12 @@ interface AttendanceRecord {
 const AddAttendance = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const isEditMode = searchParams?.get("edit") === "true";
-  const recordData = searchParams?.get("data");
+  // ✅ Extract query params safely
+  const isEditMode = router.query.edit === "true";
+  const recordData = router.query.data as string;
+
   const attendanceData: AttendanceRecord | null = recordData
     ? JSON.parse(decodeURIComponent(recordData))
     : null;
@@ -65,19 +66,18 @@ const AddAttendance = () => {
         : "Attendance record has been added successfully.",
     });
 
-    router.push("/AttendancePortal");
+    router.push("/attendanceportal");
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
-                onClick={() => router.push("/AttendancePortal")}
+                onClick={() => router.push("/attendanceportal")}
                 className="p-2"
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -94,7 +94,6 @@ const AddAttendance = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Card>
           <CardHeader>
@@ -178,7 +177,7 @@ const AddAttendance = () => {
                 </Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value: "Present" | "Absent" | "Late" | "Half Day") =>
+                  onValueChange={(value: AttendanceRecord["status"]) =>
                     setFormData({ ...formData, status: value })
                   }
                 >
@@ -201,7 +200,7 @@ const AddAttendance = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push("/AttendancePortal")}
+                  onClick={() => router.push("/attendanceportal")}
                   className="font-times"
                 >
                   Cancel

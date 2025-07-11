@@ -1,19 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import AddRawMaterialHeader from "../components/AddRawMaterialHeader";
 import RawMaterialForm from "../components/RawMaterialForm";
 
 const AddRawMaterial = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [editData, setEditData] = useState<any>(null);
   const [isEdit, setIsEdit] = useState(false);
 
   useEffect(() => {
-    const editFlag = searchParams?.get("edit") === "true";
+    const editFlag = typeof router.query.edit === "string" && router.query.edit === "true";
     setIsEdit(editFlag);
 
     if (editFlag && typeof window !== "undefined") {
@@ -28,7 +27,7 @@ const AddRawMaterial = () => {
         }
       }
     }
-  }, [searchParams]);
+  }, [router.query.edit]);
 
   return (
     <div className="min-h-screen bg-gray-50">

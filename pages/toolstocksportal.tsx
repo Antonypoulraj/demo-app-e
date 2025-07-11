@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "../contexts/AuthContext";
-import { Button } from "../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -19,41 +14,29 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+} from "@/components/ui/table";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../components/ui/dialog";
-import { Badge } from "../components/ui/badge";
+} from "@/components/ui/dialog";
+
 import {
   ArrowLeft,
   Plus,
   Edit,
   Trash2,
   Search,
-  BarChart3,
-  X,
+  Upload,
   PackagePlus,
   PackageSearch,
-  Upload,
+  X,
 } from "lucide-react";
-import { useToast } from "../hooks/use-toast";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-} from "recharts";
 
 interface ToolStockRecord {
   id: string;
@@ -82,12 +65,12 @@ const ToolStocksPortal = () => {
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const getTabParam = () => searchParams?.get("tab") || "stocks";
-
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isRequestDialogOpen, setIsRequestDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState(getTabParam());
+  const [toolStockRecords, setToolStockRecords] = useState<ToolStockRecord[]>([]);
+  const [stockRequests, setStockRequests] = useState<StockRequest[]>([]);
+  const [activeTab, setActiveTab] = useState(searchParams?.get("tab") || "stocks");
 
   const [requestFormData, setRequestFormData] = useState({
     toolName: "",
@@ -96,9 +79,6 @@ const ToolStocksPortal = () => {
     requestDate: "",
   });
 
-  const [toolStockRecords, setToolStockRecords] = useState<ToolStockRecord[]>([]);
-  const [stockRequests, setStockRequests] = useState<StockRequest[]>([]);
-
   useEffect(() => {
     const tab = searchParams?.get("tab");
     if (tab && tab !== activeTab) {
@@ -106,26 +86,12 @@ const ToolStocksPortal = () => {
     }
   }, [searchParams]);
 
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
+  const handleTabChange = (tabValue: string) => {
+    setActiveTab(tabValue);
     const params = new URLSearchParams(searchParams?.toString());
-    params.set("tab", value);
+    params.set("tab", tabValue);
     router.replace(`?${params.toString()}`);
   };
-
-  const stockStatusData = [
-    { name: "In Stock", count: 120, percentage: 60 },
-    { name: "Out of Stock", count: 50, percentage: 25 },
-    { name: "Reserved", count: 30, percentage: 15 },
-  ];
-
-  const monthlyTrendData = [
-    { month: "Jan", inStock: 110, outOfStock: 40 },
-    { month: "Feb", inStock: 115, outOfStock: 35 },
-    { month: "Mar", inStock: 120, outOfStock: 30 },
-    { month: "Apr", inStock: 125, outOfStock: 25 },
-    { month: "May", inStock: 130, outOfStock: 20 },
-  ];
 
   const categoryOptions = [
     "Electronics",
@@ -136,21 +102,14 @@ const ToolStocksPortal = () => {
   ];
 
   const filteredRecords = toolStockRecords.filter(record => {
-    const matchesSearch =
+    const matchSearch =
       record.toolName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       record.toolId.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || record.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    const matchCategory = selectedCategory === "all" || record.category === selectedCategory;
+    return matchSearch && matchCategory;
   });
 
-  const resetRequestForm = () => {
-    setRequestFormData({
-      toolName: "",
-      toolId: "",
-      quantity: 0,
-      requestDate: "",
-    });
-  };
+  const clearSearch = () => setSearchTerm("");
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -166,107 +125,175 @@ const ToolStocksPortal = () => {
 
     if (!allowedTypes.includes(file.type)) {
       toast({
-        title: "Invalid file type",
-        description: "Please upload only PDF, DOC, or Excel files.",
+        title: "Invalid File",
+        description: "Please upload a PDF, DOC, or Excel file.",
         variant: "destructive",
       });
       return;
     }
 
+    // Mock sample data
     const mockData: ToolStockRecord[] = [
       {
         id: "1",
         toolName: "Hammer",
         toolId: "TOOL001",
         category: "Hand Tools",
-        quantity: 50,
+        quantity: 20,
         location: "Warehouse A",
         status: "In Stock",
-        lastUpdated: "2024-06-01",
+        lastUpdated: "2025-07-01",
         notes: "Standard hammer",
       },
       {
         id: "2",
-        toolName: "Screwdriver Set",
+        toolName: "Drill",
         toolId: "TOOL002",
-        category: "Hand Tools",
-        quantity: 30,
-        location: "Warehouse A",
-        status: "Out of Stock",
-        lastUpdated: "2024-06-01",
-        notes: "Phillips and flathead screwdrivers",
-      },
-      {
-        id: "3",
-        toolName: "Drill Machine",
-        toolId: "TOOL003",
         category: "Power Tools",
-        quantity: 20,
+        quantity: 0,
         location: "Warehouse B",
-        status: "In Stock",
-        lastUpdated: "2024-06-01",
-        notes: "Cordless drill machine",
+        status: "Out of Stock",
+        lastUpdated: "2025-07-02",
+        notes: "Cordless drill",
       },
     ];
 
     setToolStockRecords(mockData);
     toast({
-      title: "File uploaded successfully",
-      description: `${file.name} has been processed and data populated.`,
+      title: "Upload Successful",
+      description: `${file.name} processed and data populated.`,
     });
 
     event.target.value = "";
-  };
-
-  const handleRequestSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const newStockRequest: StockRequest = {
-      ...requestFormData,
-      id: Date.now().toString(),
-      requestDate: new Date().toISOString().split("T")[0],
-      status: "Pending",
-    };
-    setStockRequests([...stockRequests, newStockRequest]);
-    toast({
-      title: "Stock Request Submitted",
-      description: "Stock request has been submitted successfully.",
-    });
-
-    resetRequestForm();
-    setIsRequestDialogOpen(false);
-  };
-
-  const handleDelete = (id: string) => {
-    setToolStockRecords(toolStockRecords.filter(record => record.id !== id));
-    toast({
-      title: "Record Deleted",
-      description: "Tool stock record has been removed.",
-    });
   };
 
   const handleEdit = (record: ToolStockRecord) => {
     const params = new URLSearchParams();
     params.set("edit", "true");
     params.set("id", record.id);
-    router.push(`/toolstocks/add?${params.toString()}`);
+    router.push(`/addtoolstock?${params.toString()}`);
   };
 
-  const handleRequestAction = (id: string, action: "Approved" | "Rejected") => {
-    setStockRequests(
-      stockRequests.map(request => (request.id === id ? { ...request, status: action } : request))
-    );
+  const handleDelete = (id: string) => {
+    setToolStockRecords(toolStockRecords.filter(r => r.id !== id));
     toast({
-      title: `Stock Request ${action}`,
-      description: `The stock request has been ${action.toLowerCase()}.`,
+      title: "Record Deleted",
+      description: "Tool stock record has been removed.",
     });
   };
 
-  const clearSearch = () => {
-    setSearchTerm("");
+  const handleRequestSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newRequest: StockRequest = {
+      ...requestFormData,
+      id: Date.now().toString(),
+      requestDate: new Date().toISOString().split("T")[0],
+      status: "Pending",
+    };
+    setStockRequests([...stockRequests, newRequest]);
+    toast({
+      title: "Request Submitted",
+      description: "Stock request submitted successfully.",
+    });
+    setIsRequestDialogOpen(false);
   };
 
-  return <div className="min-h-screen bg-gray-50">{/* JSX continues below */}</div>;
+  return (
+    <div className="min-h-screen bg-gray-50 p-4">
+      <Tabs value={activeTab} onValueChange={handleTabChange}>
+        <TabsList>
+          <TabsTrigger value="stocks">Tool Stocks</TabsTrigger>
+          <TabsTrigger value="requests">Requests</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="stocks">
+          <div className="flex items-center justify-between mb-4">
+            <div className="relative w-full max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Input
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                placeholder="Search tools..."
+                className="pl-10 pr-10"
+              />
+              {searchTerm && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearSearch}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button onClick={() => router.push("/addtoolstock")}>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Tool
+              </Button>
+
+              <Label htmlFor="upload">
+                <Button variant="outline">
+                  <Upload className="h-4 w-4 mr-2" />
+                  Upload
+                </Button>
+              </Label>
+              <Input id="upload" type="file" onChange={handleFileUpload} className="hidden" />
+            </div>
+          </div>
+
+          {/* Table (simplified for demo) */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Tool Inventory ({filteredRecords.length})</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Tool</TableHead>
+                    <TableHead>ID</TableHead>
+                    <TableHead>Qty</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredRecords.map(tool => (
+                    <TableRow key={tool.id}>
+                      <TableCell>{tool.toolName}</TableCell>
+                      <TableCell>{tool.toolId}</TableCell>
+                      <TableCell>{tool.quantity}</TableCell>
+                      <TableCell>{tool.status}</TableCell>
+                      <TableCell className="flex gap-2">
+                        <Button size="sm" onClick={() => handleEdit(tool)}>
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDelete(tool.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="requests">
+          {/* Optional stock request form or list */}
+          <p>Stock request portal will be displayed here.</p>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
 };
 
 export default ToolStocksPortal;

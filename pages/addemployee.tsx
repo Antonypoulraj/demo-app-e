@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { ArrowLeft } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ Pages Router version
 import { useToast } from "../hooks/use-toast";
 
 interface Employee {
@@ -30,11 +30,11 @@ interface Employee {
 const AddEmployee = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const isEditMode = searchParams?.get("edit") === "true";
-  const encodedEmployee = searchParams?.get("data");
+  // ✅ Safe query usage
+  const isEditMode = router.query.edit === "true";
+  const encodedEmployee = router.query.data as string;
   const employeeData: Employee | null = encodedEmployee
     ? JSON.parse(decodeURIComponent(encodedEmployee))
     : null;
@@ -73,7 +73,7 @@ const AddEmployee = () => {
         : "New employee has been added successfully.",
     });
 
-    router.push("/EmployeePortal");
+    router.push("/employeeportal"); // ✅ lowercased to match deployment
   };
 
   return (
@@ -85,7 +85,7 @@ const AddEmployee = () => {
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
-                onClick={() => router.push("/EmployeePortal")}
+                onClick={() => router.push("/employeeportal")}
                 className="p-2"
               >
                 <ArrowLeft className="h-5 w-5" />
@@ -230,7 +230,7 @@ const AddEmployee = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => router.push("/EmployeePortal")}
+                  onClick={() => router.push("/employeeportal")}
                   className="font-times"
                 >
                   Cancel

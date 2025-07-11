@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
@@ -44,7 +45,6 @@ import {
   Calendar,
   Upload,
 } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../hooks/use-toast";
 import {
   BarChart,
@@ -86,9 +86,8 @@ const AttendancePortal = () => {
   const { user } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const searchParams = useSearchParams() ?? new URLSearchParams();
-  const tabParam = searchParams.get("tab");
 
+  const tabParam = typeof router.query.tab === "string" ? router.query.tab : "";
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
@@ -145,11 +144,11 @@ const AttendancePortal = () => {
     router.push(`/attendance/add?${params.toString()}`);
   };
 
-  // ... rest of the component remains unchanged (reuse your existing logic for filtering, UI rendering, etc.)
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Your updated component with fixed types and useRouter routing */}
+      {/* You can continue building out your UI using the logic/data defined above */}
+      {/* Tabs UI (attendance, leave requests, analytics) can be rendered using `activeTab` */}
+      {/* Use filtered attendanceRecords and leaveRequests for rendering respective tables */}
     </div>
   );
 };
