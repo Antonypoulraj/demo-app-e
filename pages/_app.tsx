@@ -1,9 +1,8 @@
-// src/pages/_app.tsx
 import type { AppProps } from "next/app";
-import "../app/globals.css"; // Tailwind styles
+import "../styles/globals.css"; // ✅ assuming you moved it to /styles/
 
-import { AuthProvider } from "../src/contexts/AuthContext";
-import { DataProvider } from "../src/contexts/DataContext"; // ✅ Make sure this import path is correct
+import { AuthProvider } from "../contexts/AuthContext";
+import { DataProvider } from "../contexts/DataContext";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (

@@ -8,7 +8,7 @@ import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Button } from "./ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useData } from "@/contexts/DataContext";
+import { useData } from "../../contexts/DataContext";
 
 interface RawMaterialFormData {
   materialName: string;

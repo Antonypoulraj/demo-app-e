@@ -14,7 +14,7 @@ import {
   Package,
   Factory,
 } from "lucide-react";
-import { useAuth } from "../src/contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const Analytics = () => {
   const router = useRouter();
