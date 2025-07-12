@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
-import { useRouter } from "next/router";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import {
@@ -118,7 +118,8 @@ const Dashboard = () => {
   const accessiblePortals = getPortalsWithAccess();
 
   const handlePortalClick = (portalId: string) => {
-    router.push(`/${portalId}`);
+    const path = portalId === "analytics" ? "/analytics" : `/${portalId}portal`;
+    router.push(path);
   };
 
   const handleMenuAction = (portalId: string, action: string) => {
@@ -131,15 +132,16 @@ const Dashboard = () => {
       return;
     }
 
-    if (action === "view") {
-      router.push(`/${portalId}`);
-    } else if (action === "analytics") {
-      if (portalId === "analytics") {
-        router.push("/analytics");
-      } else {
-        router.push(`/${portalId}?tab=analytics`);
-      }
-    }
+    const path =
+      action === "analytics"
+        ? portalId === "analytics"
+          ? "/analytics"
+          : `/${portalId}portal?tab=analytics`
+        : portalId === "analytics"
+          ? "/analytics"
+          : `/${portalId}portal`;
+
+    router.push(path);
   };
 
   const handleLogout = () => {
@@ -179,7 +181,6 @@ const Dashboard = () => {
               </div>
               <h1 className="font-times text-xl font-bold text-gray-800">AERO AUTOSPACE LLP</h1>
             </div>
-
             <div className="flex items-center space-x-4">
               <div className="text-right">
                 <p className="font-times text-sm text-gray-600">
