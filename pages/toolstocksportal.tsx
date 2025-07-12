@@ -16,7 +16,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
@@ -25,18 +24,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-import {
-  ArrowLeft,
-  Plus,
-  Edit,
-  Trash2,
-  Search,
-  Upload,
-  PackagePlus,
-  PackageSearch,
-  X,
-} from "lucide-react";
+import { ArrowLeft, Plus, Edit, Trash2, Search, Upload, X } from "lucide-react";
 
 interface ToolStockRecord {
   id: string;
@@ -67,7 +55,6 @@ const ToolStocksPortal = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [isRequestDialogOpen, setIsRequestDialogOpen] = useState(false);
   const [toolStockRecords, setToolStockRecords] = useState<ToolStockRecord[]>([]);
   const [stockRequests, setStockRequests] = useState<StockRequest[]>([]);
   const [activeTab, setActiveTab] = useState(searchParams?.get("tab") || "stocks");
@@ -92,14 +79,6 @@ const ToolStocksPortal = () => {
     params.set("tab", tabValue);
     router.replace(`?${params.toString()}`);
   };
-
-  const categoryOptions = [
-    "Electronics",
-    "Hand Tools",
-    "Power Tools",
-    "Measuring Tools",
-    "Safety Gear",
-  ];
 
   const filteredRecords = toolStockRecords.filter(record => {
     const matchSearch =
@@ -132,7 +111,6 @@ const ToolStocksPortal = () => {
       return;
     }
 
-    // Mock sample data
     const mockData: ToolStockRecord[] = [
       {
         id: "1",
@@ -182,22 +160,6 @@ const ToolStocksPortal = () => {
     });
   };
 
-  const handleRequestSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newRequest: StockRequest = {
-      ...requestFormData,
-      id: Date.now().toString(),
-      requestDate: new Date().toISOString().split("T")[0],
-      status: "Pending",
-    };
-    setStockRequests([...stockRequests, newRequest]);
-    toast({
-      title: "Request Submitted",
-      description: "Stock request submitted successfully.",
-    });
-    setIsRequestDialogOpen(false);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <Tabs value={activeTab} onValueChange={handleTabChange}>
@@ -229,22 +191,16 @@ const ToolStocksPortal = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <Button onClick={() => router.push("/addtoolstock")}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Tool
-              </Button>
-
+              <Button onClick={() => router.push("/addtoolstock")}>Add Tool</Button>
               <Label htmlFor="upload">
                 <Button variant="outline">
-                  <Upload className="h-4 w-4 mr-2" />
-                  Upload
+                  <Upload className="h-4 w-4 mr-2" /> Upload
                 </Button>
               </Label>
               <Input id="upload" type="file" onChange={handleFileUpload} className="hidden" />
             </div>
           </div>
 
-          {/* Table (simplified for demo) */}
           <Card>
             <CardHeader>
               <CardTitle>Tool Inventory ({filteredRecords.length})</CardTitle>
@@ -288,7 +244,6 @@ const ToolStocksPortal = () => {
         </TabsContent>
 
         <TabsContent value="requests">
-          {/* Optional stock request form or list */}
           <p>Stock request portal will be displayed here.</p>
         </TabsContent>
       </Tabs>
