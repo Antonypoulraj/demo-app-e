@@ -19,8 +19,15 @@ const CreateAccount = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter(); // ✅ useRouter instead of useNavigate
+  const router = useRouter();
   const { toast } = useToast();
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +70,7 @@ const CreateAccount = () => {
       });
 
       setTimeout(() => {
-        router.push("/login"); // ✅ Use router.push
+        router.push("/login");
       }, 2000);
     } catch (error) {
       toast({
@@ -76,17 +83,10 @@ const CreateAccount = () => {
     }
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Company Name */}
+        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="font-times text-4xl font-bold text-gray-800 mb-4">AERO AUTOSPACE LLP</h1>
           <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-6 flex items-center justify-center">
@@ -94,21 +94,20 @@ const CreateAccount = () => {
           </div>
         </div>
 
-        {/* Create Account Form */}
         <Card className="shadow-lg">
-          <CardHeader className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => router.push("/login")} // ✅ use router.push
-                className="absolute left-4 top-4"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-              <h2 className="font-times text-2xl font-bold">Create Account</h2>
-            </div>
+          <CardHeader className="relative text-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push("/login")}
+              className="absolute left-4 top-4"
+              aria-label="Back to Login"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h2 className="font-times text-2xl font-bold">Create Account</h2>
           </CardHeader>
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Username */}
@@ -163,6 +162,7 @@ const CreateAccount = () => {
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
+                    aria-label="Toggle Password Visibility"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </Button>
@@ -190,6 +190,7 @@ const CreateAccount = () => {
                     size="sm"
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    aria-label="Toggle Confirm Password Visibility"
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -208,7 +209,7 @@ const CreateAccount = () => {
                 <button
                   type="button"
                   className="font-times text-blue-600 hover:underline text-sm"
-                  onClick={() => router.push("/login")} // ✅ use router.push
+                  onClick={() => router.push("/login")}
                 >
                   Already have an account? Login
                 </button>
@@ -218,7 +219,7 @@ const CreateAccount = () => {
             {/* Note */}
             <div className="mt-6 p-4 bg-gray-50 rounded-lg">
               <p className="font-times text-sm text-gray-600 text-center">
-                Note: Account activation requires approval from system administrator
+                Note: Account activation requires approval from system administrator.
               </p>
             </div>
           </CardContent>
