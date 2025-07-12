@@ -17,14 +17,20 @@ import {
 } from "@/components/ui/table";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { ArrowLeft, Plus, Edit, Trash2, Search, Upload, X } from "lucide-react";
+
+// Recharts
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+} from "recharts";
 
 interface ToolStockRecord {
   id: string;
@@ -58,13 +64,6 @@ const ToolStocksPortal = () => {
   const [toolStockRecords, setToolStockRecords] = useState<ToolStockRecord[]>([]);
   const [stockRequests, setStockRequests] = useState<StockRequest[]>([]);
   const [activeTab, setActiveTab] = useState(searchParams?.get("tab") || "stocks");
-
-  const [requestFormData, setRequestFormData] = useState({
-    toolName: "",
-    toolId: "",
-    quantity: 0,
-    requestDate: "",
-  });
 
   useEffect(() => {
     const tab = searchParams?.get("tab");
@@ -160,12 +159,33 @@ const ToolStocksPortal = () => {
     });
   };
 
+  const chartData = toolStockRecords.map(record => ({
+    name: record.toolName,
+    quantity: record.quantity,
+  }));
+
+  const pieData = [
+    {
+      name: "In Stock",
+      value: toolStockRecords.filter(r => r.status === "In Stock").length,
+    },
+    {
+      name: "Out of Stock",
+      value: toolStockRecords.filter(r => r.status === "Out of Stock").length,
+    },
+    {
+      name: "Reserved",
+      value: toolStockRecords.filter(r => r.status === "Reserved").length,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
       <Tabs value={activeTab} onValueChange={handleTabChange}>
         <TabsList>
           <TabsTrigger value="stocks">Tool Stocks</TabsTrigger>
           <TabsTrigger value="requests">Requests</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
         <TabsContent value="stocks">
@@ -245,6 +265,60 @@ const ToolStocksPortal = () => {
 
         <TabsContent value="requests">
           <p>Stock request portal will be displayed here.</p>
+        </TabsContent>
+
+        <TabsContent value="analytics">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Bar Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Tool Quantity Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {chartData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={chartData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="quantity" fill="#3b82f6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <p className="text-center text-gray-500">No data to display.</p>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Pie Chart */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Status Distribution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {toolStockRecords.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={pieData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        fill="#6366f1"
+                        label
+                      />
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <p className="text-center text-gray-500">No status data available.</p>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
