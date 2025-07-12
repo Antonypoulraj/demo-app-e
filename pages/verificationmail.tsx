@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ Correct for Pages Router
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +13,7 @@ const VerificationMail = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
-  const router = useRouter();
+  const router = useRouter(); // ✅ Pages Router usage
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,7 +58,7 @@ const VerificationMail = () => {
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Header */}
+        {/* Branding */}
         <div className="text-center mb-8">
           <h1 className="font-times text-4xl font-bold text-gray-800 mb-4">AERO AUTOSPACE LLP</h1>
           <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-6 flex items-center justify-center">
@@ -66,21 +66,22 @@ const VerificationMail = () => {
           </div>
         </div>
 
-        {/* Form Card */}
+        {/* Card */}
         <Card className="shadow-lg">
-          <CardHeader className="text-center">
-            <div className="flex items-center justify-center mb-4">
+          <CardHeader className="text-center space-y-2">
+            <div className="flex items-center justify-center mb-2">
               <Mail className="h-12 w-12 text-blue-600" />
             </div>
             <h2 className="font-times text-2xl font-bold">
               {isEmailSent ? "Check Your Email" : "Reset Your Password"}
             </h2>
-            <p className="font-times text-gray-600 mt-2">
+            <p className="font-times text-gray-600 text-sm">
               {isEmailSent
                 ? "We've sent a password reset link to your email address."
                 : "Enter your email address and we'll send you a reset link."}
             </p>
           </CardHeader>
+
           <CardContent>
             {!isEmailSent ? (
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -118,8 +119,8 @@ const VerificationMail = () => {
               </form>
             ) : (
               <div className="space-y-6 text-center">
-                <p className="font-times text-gray-600 mb-2">
-                  If you don't see the email, check your spam or junk folder.
+                <p className="font-times text-gray-600 text-sm">
+                  If you don’t see the email, check your spam or junk folder.
                 </p>
                 <p className="font-times text-sm text-gray-500">
                   Sent to: <strong>{email}</strong>
