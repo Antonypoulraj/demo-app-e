@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ Correct for Pages Router
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "./ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -19,7 +19,11 @@ const AddRawMaterialHeader: React.FC<AddRawMaterialHeaderProps> = ({ isEdit }) =
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
-            <Button variant="ghost" onClick={() => router.push("/rawmaterials")} className="p-2">
+            <Button
+              variant="ghost"
+              onClick={() => router.push("/rawmaterialsportal")} // ✅ updated to match your route
+              className="p-2"
+            >
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <h1 className="font-times text-xl font-bold text-gray-800">

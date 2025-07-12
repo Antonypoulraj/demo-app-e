@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ Updated for Pages Router
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -114,7 +114,7 @@ const ToolStockForm: React.FC<ToolStockFormProps> = ({ isEdit, editData }) => {
         : "Tool stock record has been added successfully.",
     });
 
-    router.push("/toolstocks");
+    router.push("/toolstocks"); // ✅ Pages Router navigation
   };
 
   return (
@@ -272,7 +272,7 @@ const ToolStockForm: React.FC<ToolStockFormProps> = ({ isEdit, editData }) => {
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.push("/toolstocks")}
+              onClick={() => router.push("/toolstocks")} // ✅ Pages Router
               className="font-times"
             >
               Cancel

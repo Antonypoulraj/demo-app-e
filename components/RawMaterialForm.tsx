@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ Pages Router
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -122,7 +122,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({ isEdit, editData }) =
         : "Raw material record has been added successfully.",
     });
 
-    router.push("/rawmaterials");
+    router.push("/rawmaterials"); // ✅ Pages Router navigation
   };
 
   return (
@@ -302,7 +302,7 @@ const RawMaterialForm: React.FC<RawMaterialFormProps> = ({ isEdit, editData }) =
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.push("/rawmaterials")}
+              onClick={() => router.push("/rawmaterials")} // ✅ Pages Router
               className="font-times"
             >
               Cancel

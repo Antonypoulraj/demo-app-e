@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router"; // ✅ Correct for Pages Router
 import { useAuth } from "../contexts/AuthContext";
 
 interface ProtectedRouteProps {
@@ -14,7 +14,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router.replace("/login");
+      router.replace("/login"); // ✅ Redirect to login if user not authenticated
     }
   }, [user, isLoading, router]);
 
