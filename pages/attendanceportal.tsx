@@ -29,7 +29,7 @@ import {
   DialogTitle,
 } from "../components/ui/dialog";
 import { Badge } from "../components/ui/badge";
-import { Upload, Plus, Edit, Trash2, Search, Calendar } from "lucide-react";
+import { Plus, Edit } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
 import {
   BarChart,
@@ -109,6 +109,8 @@ const AttendancePortal = () => {
   useEffect(() => {
     if (tabParam === "analytics") {
       setActiveTab("analytics");
+    } else if (tabParam === "leave") {
+      setActiveTab("leave");
     }
   }, [tabParam]);
 
@@ -147,10 +149,12 @@ const AttendancePortal = () => {
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-4">
-          <TabsTrigger value="attendance">Attendance</TabsTrigger>
+          <TabsTrigger value="attendance">Attendance Records</TabsTrigger>
+          <TabsTrigger value="leave">Leave Management</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
+        {/* ATTENDANCE TAB */}
         <TabsContent value="attendance">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
             <div className="flex gap-2 w-full md:w-1/2">
@@ -223,6 +227,55 @@ const AttendancePortal = () => {
           </Table>
         </TabsContent>
 
+        {/* LEAVE MANAGEMENT TAB */}
+        <TabsContent value="leave">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Leave Requests</h2>
+            <Button onClick={() => router.push("/leave/add")}>
+              <Plus className="mr-2 h-4 w-4" />
+              Submit Leave Request
+            </Button>
+          </div>
+
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Employee Name</TableHead>
+                <TableHead>Employee ID</TableHead>
+                <TableHead>Leave Type</TableHead>
+                <TableHead>Start Date</TableHead>
+                <TableHead>End Date</TableHead>
+                <TableHead>Reason</TableHead>
+                <TableHead>Manager Email</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {leaveRequests.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8} className="text-center">
+                    No leave requests found.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                leaveRequests.map(request => (
+                  <TableRow key={request.id}>
+                    <TableCell>{request.employeeName}</TableCell>
+                    <TableCell>{request.employeeId}</TableCell>
+                    <TableCell>{request.leaveType}</TableCell>
+                    <TableCell>{request.startDate}</TableCell>
+                    <TableCell>{request.endDate}</TableCell>
+                    <TableCell>{request.reason}</TableCell>
+                    <TableCell>{request.managerEmail}</TableCell>
+                    <TableCell>{request.status}</TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </TabsContent>
+
+        {/* ANALYTICS TAB */}
         <TabsContent value="analytics">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg shadow-md p-4">

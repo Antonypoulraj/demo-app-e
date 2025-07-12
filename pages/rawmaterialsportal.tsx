@@ -24,7 +24,6 @@ import {
   Edit,
   Trash2,
   Search,
-  Package,
   AlertTriangle,
   CheckCircle,
   X,
@@ -52,8 +51,6 @@ const RawMaterialsPortal = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [materials, setMaterials] = useState<RawMaterial[]>([]);
 
-  const statuses = ["In Stock", "Low Stock", "Out of Stock"];
-
   const filteredMaterials = materials.filter(material => {
     const matchesSearch =
       material.materialName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -65,7 +62,7 @@ const RawMaterialsPortal = () => {
 
   const handleEdit = (material: RawMaterial) => {
     sessionStorage.setItem("edit_raw_material", JSON.stringify(material));
-    router.push(`/addrawmaterial?edit=true`);
+    router.push("/addrawmaterial?edit=true");
   };
 
   const handleDelete = (id: string) => {
@@ -197,9 +194,7 @@ const RawMaterialsPortal = () => {
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
-          {/* Inventory Records */}
           <TabsContent value="records" className="space-y-6">
-            {/* Search & Upload */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -232,7 +227,6 @@ const RawMaterialsPortal = () => {
               </div>
             </div>
 
-            {/* Table */}
             <Card>
               <CardHeader>
                 <CardTitle className="font-times">
@@ -289,7 +283,6 @@ const RawMaterialsPortal = () => {
             </Card>
           </TabsContent>
 
-          {/* Analytics */}
           <TabsContent value="analytics">
             <Card>
               <CardHeader>
