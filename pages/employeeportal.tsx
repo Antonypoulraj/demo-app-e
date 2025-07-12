@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useRouter } from "next/router"; // ✅ Fixed: correct router for Pages directory
