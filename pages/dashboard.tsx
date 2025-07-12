@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
+import { useRouter } from "next/router";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import {
@@ -48,7 +48,7 @@ const Dashboard = () => {
 
   const allPortals: Portal[] = [
     {
-      id: "employee",
+      id: "employeeportal",
       title: "Employee Portal",
       icon: <Users className="h-8 w-8" />,
       color: "text-blue-600",
@@ -56,7 +56,7 @@ const Dashboard = () => {
       description: "Manage employee information and records",
     },
     {
-      id: "attendance",
+      id: "attendanceportal",
       title: "Attendance Portal",
       icon: <Clock className="h-8 w-8" />,
       color: "text-green-600",
@@ -64,7 +64,7 @@ const Dashboard = () => {
       description: "Track employee attendance and leaves",
     },
     {
-      id: "toolstocks",
+      id: "toolstocksportal",
       title: "Tool Stocks Portal",
       icon: <Wrench className="h-8 w-8" />,
       color: "text-orange-600",
@@ -72,7 +72,7 @@ const Dashboard = () => {
       description: "Manage tool inventory and stock levels",
     },
     {
-      id: "rawmaterials",
+      id: "rawmaterialsportal",
       title: "Raw Materials Portal",
       icon: <Package className="h-8 w-8" />,
       color: "text-purple-600",
@@ -80,7 +80,7 @@ const Dashboard = () => {
       description: "Track raw material inventory",
     },
     {
-      id: "production",
+      id: "productionportal",
       title: "Production Portal",
       icon: <Factory className="h-8 w-8" />,
       color: "text-red-600",
@@ -100,7 +100,7 @@ const Dashboard = () => {
   const getPortalsWithAccess = () => {
     if (user?.role === "guest") {
       return allPortals.filter(portal => {
-        if (portal.id === "attendance" || portal.id === "production") {
+        if (portal.id === "attendanceportal" || portal.id === "productionportal") {
           portal.accessLevel = "input";
           return true;
         }
@@ -118,8 +118,7 @@ const Dashboard = () => {
   const accessiblePortals = getPortalsWithAccess();
 
   const handlePortalClick = (portalId: string) => {
-    const path = portalId === "analytics" ? "/analytics" : `/${portalId}portal`;
-    router.push(path);
+    router.push(`/${portalId}`);
   };
 
   const handleMenuAction = (portalId: string, action: string) => {
@@ -132,16 +131,15 @@ const Dashboard = () => {
       return;
     }
 
-    const path =
-      action === "analytics"
-        ? portalId === "analytics"
-          ? "/analytics"
-          : `/${portalId}portal?tab=analytics`
-        : portalId === "analytics"
-          ? "/analytics"
-          : `/${portalId}portal`;
-
-    router.push(path);
+    if (action === "view") {
+      router.push(`/${portalId}`);
+    } else if (action === "analytics") {
+      if (portalId === "analytics") {
+        router.push("/analytics");
+      } else {
+        router.push(`/${portalId}?tab=analytics`);
+      }
+    }
   };
 
   const handleLogout = () => {
@@ -229,7 +227,6 @@ const Dashboard = () => {
                   >
                     {portal.icon}
                   </div>
-
                   {portal.accessLevel === "full" && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -263,7 +260,6 @@ const Dashboard = () => {
                     </DropdownMenu>
                   )}
                 </div>
-
                 <h3 className={`font-times text-lg font-semibold ${portal.color} mb-2`}>
                   {portal.title}
                 </h3>
@@ -272,37 +268,6 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        {/* Company Info */}
-        <div className="mt-12 bg-white rounded-lg shadow-sm p-6">
-          <h3 className="font-times text-xl font-bold text-gray-800 mb-4">Company Information</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-times text-lg font-semibold text-gray-700 mb-2">
-                About AERO AUTOSPACE LLP
-              </h4>
-              <p className="font-times text-gray-600 mb-4">
-                Leading aerospace manufacturing company specializing in precision components and
-                advanced manufacturing solutions for the aviation industry.
-              </p>
-              <p className="font-times text-gray-600">
-                Our state-of-the-art facilities and experienced team ensure the highest quality
-                standards in aerospace component manufacturing.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-times text-lg font-semibold text-gray-700 mb-2">
-                Contact Information
-              </h4>
-              <div className="space-y-2 font-times text-gray-600">
-                <p>📧 info@aeroautospace.com</p>
-                <p>📞 +1 (555) 123-4567</p>
-                <p>📍 Aerospace Industrial Park, Suite 100</p>
-                <p>🌐 www.aeroautospace.com</p>
-              </div>
-            </div>
-          </div>
         </div>
       </main>
     </div>
