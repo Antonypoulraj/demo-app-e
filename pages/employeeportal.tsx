@@ -180,7 +180,7 @@ const EmployeePortal = () => {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList>
           <TabsTrigger value="employees">Employee List</TabsTrigger>
-          <TabsTrigger value="chart">Department Chart</TabsTrigger>
+          <TabsTrigger value="chart">Analytics</TabsTrigger>
           <TabsTrigger value="upload">Upload File</TabsTrigger>
         </TabsList>
 
