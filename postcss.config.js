@@ -1,27 +1,6 @@
-// const config = {
-//   plugins: ["@tailwindcss/postcss"],
-// };
-
-// export default config;
-
-// postcss.config.mjs
-
-// export default {
-//   plugins: ["@tailwindcss/postcss", "autoprefixer"],
-
-// };
 module.exports = {
   plugins: {
-    "@tailwindcss/postcss": {},
+    "@tailwindcss/postcss": {}, // ✅ Use the new official plugin
     autoprefixer: {},
   },
 };
-// import tailwindcss from "tailwindcss";
-// import autoprefixer from "autoprefixer";
-
-// /** @type {import('postcss').ProcessOptions} */
-// const config = {
-//   plugins: [tailwindcss,  autoprefixer],
-// };
-
-// export default config;
