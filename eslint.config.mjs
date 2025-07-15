@@ -3,10 +3,10 @@ import js from "@eslint/js";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsparser from "@typescript-eslint/parser";
 import next from "eslint-plugin-next";
-import nextPlugin from "eslint-plugin-next";
 import prettier from "eslint-config-prettier";
 
 export default [
+  js.configs.recommended,
   {
     files: ["**/*.{js,ts,jsx,tsx}"],
     languageOptions: {
@@ -19,17 +19,13 @@ export default [
     },
     plugins: {
       "@typescript-eslint": tseslint,
-      next,
+      next: next,
     },
     rules: {
-      // ✅ Disabled rules as requested
       "@typescript-eslint/no-unused-vars": "off",
       "react/no-unescaped-entities": "off",
     },
   },
-
-  // ✅ Prettier last so it disables conflicting rules
-  js.configs.recommended,
   prettier,
   next.configs.recommended,
 ];
