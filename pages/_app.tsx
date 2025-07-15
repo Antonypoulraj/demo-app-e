@@ -1,3 +1,4 @@
+// pages/_app.tsx
 import type { AppProps } from "next/app";
 import "@/styles/globals.css";
 
@@ -9,6 +10,7 @@ const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
 });
+
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
