@@ -8,6 +8,10 @@
   --foreground: 0 0% 10%;
   --font-sans: var(--font-geist-sans, system-ui, sans-serif);
   --font-mono: var(--font-geist-mono, monospace);
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 10%;
+  --primary: 240 100% 60%;
+  --primary-foreground: 0 0% 100%;
 }
 
 @media (prefers-color-scheme: dark) {

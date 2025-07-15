@@ -5,7 +5,10 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./contexts/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}", // ✅ add if using app dir
+    "./src/**/*.{js,ts,jsx,tsx}", // ✅ add if using src/ folder
   ],
+
   theme: {
     extend: {
       borderRadius: {
