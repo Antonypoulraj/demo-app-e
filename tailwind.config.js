@@ -1,6 +1,4 @@
-{
-  import("tailwindcss").Config;
-}
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -8,7 +6,6 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./contexts/**/*.{js,ts,jsx,tsx}",
   ],
-
   theme: {
     extend: {
       borderRadius: {
