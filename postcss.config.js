@@ -10,13 +10,12 @@
 //   plugins: ["@tailwindcss/postcss", "autoprefixer"],
 
 // };
-export default {
+module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
   },
 };
-
 // import tailwindcss from "tailwindcss";
 // import autoprefixer from "autoprefixer";
 
