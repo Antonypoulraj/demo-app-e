@@ -20,7 +20,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"] // ✅ Adjust if your code lives in /src
+      "@/*": ["./*"]
     },
     "baseUrl": "." // Required for paths to resolve
   },
