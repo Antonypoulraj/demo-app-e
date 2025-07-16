@@ -20,7 +20,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <DataProvider>
-        <div className={`${geistSans.variable} ${geistMono.variable} antialiased `}>
+        <div className={`${geistSans.variable} ${geistMono.variable} antialiased bg-red-100 `}>
           <Component {...pageProps} />
         </div>
       </DataProvider>
