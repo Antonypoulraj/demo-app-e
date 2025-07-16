@@ -1,10 +1,10 @@
 // pages/_document.tsx
 import { Html, Head, Main, NextScript } from "next/document";
-import { geistSans, geistMono } from "./_app"; // OR re-import here if necessary
+import { geistSans, geistMono } from "./_app"; // ✅ must move fonts to a shared file or redefine here
 
 export default function Document() {
   return (
-    <Html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <Html className={`${geistSans.variable} ${geistMono.variable}`}>
       <Head />
       <body className="antialiased">
         <Main />
