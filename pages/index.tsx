@@ -1,4 +1,4 @@
-// src/pages/index.tsx
+//pages/index.tsx
 "use client";
 
 import { useEffect } from "react";
