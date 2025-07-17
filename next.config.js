@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
   experimental: {
-    serverActions: true,
+    serverActions: true, // Optional for Next.js 14
   },
 };
 
