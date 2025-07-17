@@ -1,12 +1,27 @@
-const js = require("@eslint/js");
-const tseslint = require("@typescript-eslint/eslint-plugin");
-const tsparser = require("@typescript-eslint/parser");
-const next = require("eslint-plugin-next");
-const prettier = require("eslint-config-prettier");
+import js from "@eslint/js";
+import tseslint from "@typescript-eslint/eslint-plugin";
+import tsparser from "@typescript-eslint/parser";
+import next from "eslint-plugin-next";
+import prettier from "eslint-config-prettier";
+import { FlatCompat } from "@eslint/eslintrc";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
 
-/** @type {import("eslint").Linter.FlatConfig[]} */
-module.exports = [
+// Resolve __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Support old-style config extensions (if needed)
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+export default [
   js.configs.recommended,
+
+  // Convert old configs from `extends: []`
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+
   {
     files: ["**/*.{js,ts,jsx,tsx}"],
     languageOptions: {
@@ -26,9 +41,42 @@ module.exports = [
       "react/no-unescaped-entities": "off",
     },
   },
+
   prettier,
   next.configs.recommended,
 ];
+
+// const js = require("@eslint/js");
+// const tseslint = require("@typescript-eslint/eslint-plugin");
+// const tsparser = require("@typescript-eslint/parser");
+// const next = require("eslint-plugin-next");
+// const prettier = require("eslint-config-prettier");
+
+// /** @type {import("eslint").Linter.FlatConfig[]} */
+// module.exports = [
+//   js.configs.recommended,
+//   {
+//     files: ["**/*.{js,ts,jsx,tsx}"],
+//     languageOptions: {
+//       parser: tsparser,
+//       parserOptions: {
+//         project: "./tsconfig.json",
+//         ecmaVersion: "latest",
+//         sourceType: "module",
+//       },
+//     },
+//     plugins: {
+//       "@typescript-eslint": tseslint,
+//       next: next,
+//     },
+//     rules: {
+//       "@typescript-eslint/no-unused-vars": "off",
+//       "react/no-unescaped-entities": "off",
+//     },
+//   },
+//   prettier,
+//   next.configs.recommended,
+// ];
 
 // // eslint.config.mjs
 // import js from "@eslint/js";
