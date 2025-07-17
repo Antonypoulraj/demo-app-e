@@ -16,8 +16,25 @@ module.exports = {
     extend: {
       colors: {
         ...colors, // ✅ restores Tailwind default colors like blue-50
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "oklch(var(--background))",
+        foreground: "oklch(var(--foreground))",
+        card: "oklch(var(--card))",
+        "card-foreground": "oklch(var(--card-foreground))",
+        border: "oklch(var(--border))",
+        input: "oklch(var(--input))",
+        ring: "oklch(var(--ring))",
+        primary: "oklch(var(--primary))",
+        "primary-foreground": "oklch(var(--primary-foreground))",
+        secondary: "oklch(var(--secondary))",
+        "secondary-foreground": "oklch(var(--secondary-foreground))",
+        muted: "oklch(var(--muted))",
+        "muted-foreground": "oklch(var(--muted-foreground))",
+        accent: "oklch(var(--accent))",
+        "accent-foreground": "oklch(var(--accent-foreground))",
+        destructive: "oklch(var(--destructive))",
+        popover: "oklch(var(--popover))",
+        "popover-foreground": "oklch(var(--popover-foreground))",
+        // Add more if needed (e.g. chart, sidebar colors)
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
