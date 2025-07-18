@@ -46,7 +46,7 @@ const Login = () => {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-semibold text-gray-800">AERO AUTOSPACE LLP</h1>
-          <div className="w-20 h-20 bg-gray-200 rounded-full mx-auto flex items-center justify-center shadow-inner mt-4">
+          <div className="w-5 h-20 bg-gray-200 rounded-full mx-auto flex items-center justify-center shadow-inner mt-4">
             <span className="text-sm font-semibold text-gray-600">LOGO</span>
           </div>
         </div>
@@ -66,7 +66,7 @@ const Login = () => {
                   type="text"
                   value={username}
                   onChange={e => setUsername(e.target.value)}
-                  maxLength={20}
+                  maxLength={5}
                   placeholder="Enter username"
                   className="text-sm py-2"
                 />
@@ -82,7 +82,7 @@ const Login = () => {
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
-                    maxLength={20}
+                    maxLength={5}
                     placeholder="Enter password"
                     className="pr-10 text-sm py-2"
                   />
