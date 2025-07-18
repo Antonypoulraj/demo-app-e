@@ -8,7 +8,7 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
 
-export default function LoginPage() {
+const Login = () => {
   const router = useRouter();
   const { login } = useAuth();
   const { toast } = useToast();
@@ -136,7 +136,9 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
+};
+
+export default Login;
 
 // // pages/login.tsx
 // import React, { useState } from "react";
