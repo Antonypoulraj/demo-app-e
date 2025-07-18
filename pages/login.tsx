@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../hooks/use-toast";
-import { Card, CardContent, CardHeader } from "../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
@@ -28,7 +28,7 @@ const Login = () => {
       } else {
         toast({
           title: "Login failed",
-          description: "Invalid username or password",
+          description: "Invalid username or password.",
           variant: "destructive",
         });
       }
@@ -43,32 +43,25 @@ const Login = () => {
     }
   };
 
-  const handleForgotPassword = () => {
-    toast({ title: "Forgot Password", description: "This feature is not implemented yet." });
-  };
-
-  const handleCreateAccount = () => {
-    toast({ title: "Create Account", description: "This feature is not implemented yet." });
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold tracking-tight">AERO AUTOSPACE LLP</h1>
-          <div className="w-24 h-24 rounded-full bg-muted mx-auto flex items-center justify-center shadow-sm mt-6">
-            <span className="text-muted-foreground font-medium">LOGO</span>
+    <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md space-y-8">
+        <div className="text-center">
+          <div className="w-16 h-16 rounded-full bg-muted mx-auto flex items-center justify-center text-muted-foreground font-medium mb-4">
+            LOGO
           </div>
+          <h1 className="text-3xl font-bold">Welcome back</h1>
+          <p className="text-sm text-muted-foreground mt-1">Enter your credentials to sign in</p>
         </div>
 
         <Card className="border shadow-sm">
-          <CardHeader className="text-center pb-2">
-            <h2 className="text-2xl font-semibold tracking-tight">Login</h2>
+          <CardHeader>
+            <CardTitle className="text-xl">Login to your account</CardTitle>
           </CardHeader>
 
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="space-y-1">
+              <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
                 <Input
                   id="username"
@@ -78,7 +71,7 @@ const Login = () => {
                 />
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
                   <Input
@@ -93,46 +86,56 @@ const Login = () => {
                     size="icon"
                     variant="ghost"
                     className="absolute right-2 top-1/2 -translate-y-1/2"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => setShowPassword(prev => !prev)}
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
                 </div>
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
+                {isLoading ? "Signing in..." : "Sign in"}
               </Button>
 
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-sm text-muted-foreground mt-2">
                 <button
                   type="button"
-                  onClick={handleForgotPassword}
-                  className="text-muted-foreground hover:underline"
+                  onClick={() =>
+                    toast({
+                      title: "Forgot Password",
+                      description: "Feature not implemented yet.",
+                    })
+                  }
+                  className="hover:underline"
                 >
-                  Forgot Password?
+                  Forgot password?
                 </button>
                 <button
                   type="button"
-                  onClick={handleCreateAccount}
-                  className="text-muted-foreground hover:underline"
+                  onClick={() =>
+                    toast({
+                      title: "Create Account",
+                      description: "Feature not implemented yet.",
+                    })
+                  }
+                  className="hover:underline"
                 >
-                  Create Account
+                  Create account
                 </button>
               </div>
             </form>
-
-            <div className="mt-6 p-3 rounded-md bg-muted border text-sm text-muted-foreground">
-              <p className="font-medium mb-1">Demo Credentials:</p>
-              <p>
-                <strong>Admin:</strong> admin / admin123
-              </p>
-              <p>
-                <strong>Guest:</strong> guest / guest123
-              </p>
-            </div>
           </CardContent>
         </Card>
+
+        <div className="text-center text-sm text-muted-foreground">
+          <p className="font-medium">Demo credentials</p>
+          <p>
+            <strong>Admin:</strong> admin / admin123
+          </p>
+          <p>
+            <strong>Guest:</strong> guest / guest123
+          </p>
+        </div>
       </div>
     </div>
   );
