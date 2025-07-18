@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../hooks/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Card, CardContent, CardHeader } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
@@ -28,11 +28,11 @@ const Login = () => {
       } else {
         toast({
           title: "Login failed",
-          description: "Invalid username or password.",
+          description: "Invalid username or password",
           variant: "destructive",
         });
       }
-    } catch (err) {
+    } catch {
       toast({
         title: "Login error",
         description: "Something went wrong. Please try again.",
@@ -44,67 +44,74 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md space-y-8">
+    <main className="min-h-screen flex items-center justify-center bg-background px-4 py-10 text-foreground">
+      <div className="w-full max-w-sm space-y-6">
+        {/* Title */}
         <div className="text-center">
-          <div className="w-16 h-16 rounded-full bg-muted mx-auto flex items-center justify-center text-muted-foreground font-medium mb-4">
+          <h1 className="text-2xl font-semibold tracking-tight">AERO AUTOSPACE LLP</h1>
+          <div className="w-16 h-16 bg-muted rounded-full mx-auto mt-4 flex items-center justify-center text-muted-foreground text-sm shadow">
             LOGO
           </div>
-          <h1 className="text-3xl font-bold">Welcome back</h1>
-          <p className="text-sm text-muted-foreground mt-1">Enter your credentials to sign in</p>
         </div>
 
-        <Card className="border shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-xl">Login to your account</CardTitle>
+        {/* Card */}
+        <Card className="border border-border shadow-sm">
+          <CardHeader className="pb-2 text-center">
+            <h2 className="text-lg font-medium">Login to your account</h2>
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Username */}
+              <div className="space-y-1">
+                <Label htmlFor="username" className="text-sm">
+                  Username
+                </Label>
                 <Input
                   id="username"
-                  placeholder="Enter username"
+                  size={32}
                   value={username}
                   onChange={e => setUsername(e.target.value)}
+                  placeholder="Enter username"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+              {/* Password */}
+              <div className="space-y-1">
+                <Label htmlFor="password" className="text-sm">
+                  Password
+                </Label>
                 <div className="relative">
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
+                    placeholder="Enter password"
                   />
                   <Button
                     type="button"
                     size="icon"
                     variant="ghost"
                     className="absolute right-2 top-1/2 -translate-y-1/2"
-                    onClick={() => setShowPassword(prev => !prev)}
+                    onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
                 </div>
               </div>
 
+              {/* Login Button */}
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Signing in..." : "Sign in"}
+                {isLoading ? "Logging in..." : "Login"}
               </Button>
 
-              <div className="flex justify-between text-sm text-muted-foreground mt-2">
+              {/* Links */}
+              <div className="flex justify-between text-xs text-muted-foreground">
                 <button
                   type="button"
                   onClick={() =>
-                    toast({
-                      title: "Forgot Password",
-                      description: "Feature not implemented yet.",
-                    })
+                    toast({ title: "Forgot Password", description: "Not implemented yet." })
                   }
                   className="hover:underline"
                 >
@@ -113,10 +120,7 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={() =>
-                    toast({
-                      title: "Create Account",
-                      description: "Feature not implemented yet.",
-                    })
+                    toast({ title: "Create Account", description: "Not implemented yet." })
                   }
                   className="hover:underline"
                 >
@@ -124,20 +128,21 @@ const Login = () => {
                 </button>
               </div>
             </form>
+
+            {/* Demo */}
+            <div className="mt-5 p-3 rounded-md bg-muted text-muted-foreground text-xs border">
+              <p className="font-medium">Demo Credentials:</p>
+              <p>
+                <strong>Admin</strong>: admin / admin123
+              </p>
+              <p>
+                <strong>Guest</strong>: guest / guest123
+              </p>
+            </div>
           </CardContent>
         </Card>
-
-        <div className="text-center text-sm text-muted-foreground">
-          <p className="font-medium">Demo credentials</p>
-          <p>
-            <strong>Admin:</strong> admin / admin123
-          </p>
-          <p>
-            <strong>Guest:</strong> guest / guest123
-          </p>
-        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
