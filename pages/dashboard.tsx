@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import {
@@ -96,7 +96,7 @@ const Dashboard = () => {
       description: "View reports and analytics",
     },
   ];
-
+  // Filter portals based on user role with specific access levels
   const getPortalsWithAccess = () => {
     if (user?.role === "guest") {
       return allPortals.filter(portal => {
@@ -130,7 +130,6 @@ const Dashboard = () => {
       });
       return;
     }
-
     if (action === "view") {
       router.push(`/${portalId}`);
     } else if (action === "analytics") {
@@ -169,7 +168,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -193,15 +191,13 @@ const Dashboard = () => {
                 <p className="font-times text-xs text-gray-500 capitalize">{user?.role} Account</p>
               </div>
               <Button variant="outline" size="sm" onClick={handleLogout} className="font-times">
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                <LogOut className="h-4 w-4 mr-2" /> Logout
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h2 className="font-times text-3xl font-bold text-gray-800 mb-2">
@@ -212,7 +208,6 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Portal Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {accessiblePortals.map(portal => (
             <Card
@@ -268,6 +263,36 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        <div className="mt-12 bg-white rounded-lg shadow-sm p-6">
+          <h3 className="font-times text-xl font-bold text-gray-800 mb-4">Company Information</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-times text-lg font-semibold text-gray-700 mb-2">
+                About AERO AUTOSPACE LLP
+              </h4>
+              <p className="font-times text-gray-600 mb-4">
+                Leading aerospace manufacturing company specializing in precision components and
+                advanced manufacturing solutions for the aviation industry.
+              </p>
+              <p className="font-times text-gray-600">
+                Our state-of-the-art facilities and experienced team ensure the highest quality
+                standards in aerospace component manufacturing.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-times text-lg font-semibold text-gray-700 mb-2">
+                Contact Information
+              </h4>
+              <div className="space-y-2 font-times text-gray-600">
+                <p>📧 info@aeroautospace.com</p>
+                <p>📞 +1 (555) 123-4567</p>
+                <p>📍 Aerospace Industrial Park, Suite 100</p>
+                <p>🌐 www.aeroautospace.com</p>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>
