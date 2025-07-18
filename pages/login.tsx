@@ -64,12 +64,12 @@ const Login = () => {
 
         <Card className="shadow-lg border border-gray-200 rounded-xl">
           <CardHeader className="text-center pb-4">
-            <h2 className="font-times text-2xl font-semibold text-gray-900">Login</h2>
+            <h2 className="font-times text-2xl font-semibold text-gray-500">Login</h2>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-1">
-                <Label htmlFor="username" className="font-times text-sm text-gray-800">
+                <Label htmlFor="username" className="font-times text-sm text-gray-500">
                   Username
                 </Label>
                 <Input
@@ -84,7 +84,7 @@ const Login = () => {
               </div>
 
               <div className="space-y-1">
-                <Label htmlFor="password" className="font-times text-sm text-gray-800">
+                <Label htmlFor="password" className="font-times text-sm text-gray-500">
                   Password
                 </Label>
                 <div className="relative">
@@ -111,7 +111,7 @@ const Login = () => {
 
               <Button
                 type="submit"
-                className="w-full font-times text-sm py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+                className="w-full font-times text-sm py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md"
                 disabled={isLoading}
               >
                 {isLoading ? "Logging in..." : "Login"}
@@ -120,14 +120,14 @@ const Login = () => {
               <div className="flex justify-between text-xs pt-2">
                 <button
                   type="button"
-                  className="font-times text-blue-700 hover:underline"
+                  className="font-times text-blue-500 hover:underline"
                   onClick={handleForgotPassword}
                 >
                   Forgot Password?
                 </button>
                 <button
                   type="button"
-                  className="font-times text-blue-700 hover:underline"
+                  className="font-times text-blue-500 hover:underline"
                   onClick={handleCreateAccount}
                 >
                   Create Account
@@ -139,10 +139,10 @@ const Login = () => {
               <p className="font-times text-xs text-gray-800 mb-1 font-semibold">
                 Demo Credentials:
               </p>
-              <p className="font-times text-xs text-gray-700">
+              <p className="font-times text-xs text-gray-500">
                 <span className="font-semibold">Admin:</span> admin / admin123
               </p>
-              <p className="font-times text-xs text-gray-700">
+              <p className="font-times text-xs text-gray-500">
                 <span className="font-semibold">Guest:</span> guest / guest123
               </p>
             </div>
